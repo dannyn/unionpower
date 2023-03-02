@@ -14,7 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Use Node.js ${{ matrix.node-version }}
-        working-directory: anEventsToAt
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
@@ -22,7 +21,6 @@ jobs:
         working-directory: anEventsToAt
         run: npm install
       - name: Configure AWS Credentials
-        working-directory: anEventsToAt
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
