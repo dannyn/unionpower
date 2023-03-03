@@ -121,8 +121,10 @@ variables.
       syncToAn:
         handler: handler.run
         environment: 
-          ACTION_NETWORK_APIKEY: ${ssm:/an-api-key}
+          ACTION_NETWORK_APIKEY: ${ssm:/an-api-key~true}
 ```
+
+Don't forget to add the `~true` at the end.
 
 
 Deploy locally
