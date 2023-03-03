@@ -24,7 +24,7 @@ functions:
           path: joke
           method: get
     environment:
-      variable2: value2
+      ACTION_NETWORK_API_KEY:  ${ssm:/action-network-api-key}
 
 plugins:
   - serverless-python-requirements
