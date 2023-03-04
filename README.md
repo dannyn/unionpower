@@ -80,17 +80,7 @@ variables.
 Don't forget to add the `~true` at the end.
 
 
-Deploy locally
-==============
-
-You will need to have docker running for this to work.
-
-```
-    $ serverless --aws-profile <profile to use> deploy
-```
-
-
-Deploy Automaticaly
+To Deploy
 ===================
 
 You will need to have your AWS credentials set as github secrets.

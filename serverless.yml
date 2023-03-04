@@ -25,6 +25,14 @@ functions:
           method: get
     environment:
       ACTION_NETWORK_API_KEY: ${ssm:/action-network-api-key~true}
+  an_endpoint:
+    handler: src.handlers.an_endpoint_handler
+    events:
+      - http:
+          path: an_endpoint
+          method: post
+    environment:
+      ACTION_NETWORK_API_KEY: ${ssm:/action-network-api-key~true}
 
 plugins:
   - serverless-python-requirements

@@ -11,3 +11,14 @@ def hello_handler(event, context):
     }
 
     return response
+
+
+def an_endpoint_handler(event, context):
+    
+    
+    response = {
+        "statusCode": 200,
+        "body": "here"
+    }
+
+    return response
