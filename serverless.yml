@@ -17,14 +17,6 @@ package:
     - node_modules/**
 
 functions:
-  hello:
-    handler: src.handlers.hello_handler
-    events:
-      - http:
-          path: joke
-          method: get
-    environment:
-      ACTION_NETWORK_API_KEY: ${ssm:/action-network-api-key~true}
   an_endpoint:
     handler: src.handlers.an_endpoint_handler
     events:
