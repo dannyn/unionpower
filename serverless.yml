@@ -18,7 +18,7 @@ package:
 
 functions:
   hello:
-    handler: src.handlers.hello
+    handler: src.handlers.hello_handler
     events:
       - http:
           path: joke
