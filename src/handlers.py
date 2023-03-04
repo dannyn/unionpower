@@ -1,10 +1,14 @@
 import json
 
+from src.functions.hello import hello
 
-def hello(event):
-    body = {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "input": event
+
+def hello_handler(event, context):
+    j = json.dumps(event)
+
+    response = {
+        "statusCode": 200,
+        "body": hello(j)
     }
 
-    return body
+    return response
