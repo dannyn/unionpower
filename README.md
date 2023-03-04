@@ -32,7 +32,8 @@ We need a plugin.
 
 ```
 
-Edit `serverless.yaml` for your function. A baseline configuration is as follows.
+Edit `serverless.yaml` for your function. A baseline configuration is as follows. Note that
+`path` is the path in the Api-Gateway that this will create.
 
 ```
 service: aneventstoat
