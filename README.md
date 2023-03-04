@@ -4,8 +4,6 @@ Lambda functions for Union Power
 https://betterprogramming.pub/set-up-a-ci-cd-pipeline-for-aws-lambda-with-github-actions-and-serverless-in-under-5-minutes-fd070da9d143
 
 
-Create a new function
-=====================
 
 
 
@@ -18,75 +16,7 @@ You will need the serverless cli installed.
     $ npm install -g serverless
 ```
 
-Create a new function.
-
-```
-    $ serverless create --template aws-python3 --path <functionName>
-    $ cd <functionName>
-```
-
-We need a plugin.
-
-```
-    $ serverless plugin install -n serverless-python-requirements
-
-```
-
-Edit `serverless.yaml` for your function. A baseline configuration is as follows. Note that
-`path` is the path in the Api-Gateway that this will create.
-
-```
-service: aneventstoat
-
-provider:
-  name: aws
-  runtime: python3.8
-  region: us-east-1
-
-custom:
-  pythonRequirements:
-    dockerizePip: true
-
-package:
-  individually: false
-  exclude:
-    - package.json
-    - package-log.json
-    - node_modules/**
-
-functions:
-  hello:
-    handler: handler.hello
-    events:
-      - http:
-          path: joke
-          method: get
-    environment:
-      variable2: value2
-
-plugins:
-  - serverless-python-requirements
-```
-
-You will also need to modify `package.json` to suit your needs.
-
-```
-{
-  "name": "union-power-aneventstoat",
-  "description": "",
-  "version": "0.1.0",
-  "dependencies": {},
-  "scripts": {
-    "deploy": "serverless deploy"
-  },
-  "devDependencies": {
-    "serverless": "^1.67.0",
-    "serverless-python-requirements": "^6.0.0"
-  }
-}
-```
-
-In a function we create and activate a virtual environment to work in.
+Create a virtual environment.
 
 ```
     $ python3 -m  venv venv
@@ -99,12 +29,34 @@ Install deps.
     $ pip -r requirements.txt
 ```
 
-You can use pip to install more deps or freeze them in the usual way.
+You can use pip to install more deps or freeze them in the usual way. But be careful,
+the size of a deploy cannot exceed 250M, which is surprisingly and shockingly easy
+to do.
 
 ```
-    $ pip install parsons[all
+    $ pip install airtable
     $ pip freeze > requirements.txt
 ```
+
+
+Create a new function
+=====================
+
+Edit `serverless.yaml` for your function. A baseline configuration is as follows. Note that
+`path` is the path in the Api-Gateway that this will create.
+
+```
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: joke
+          method: get
+    environment:
+      variable2: value2
+```
+
 
 Create and Run Tests
 ====================
