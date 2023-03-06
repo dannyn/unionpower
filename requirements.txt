@@ -1,1 +1,3 @@
-airtable
+pyairtable
+pytest
+requests-mock

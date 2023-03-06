@@ -61,6 +61,12 @@ functions:
 Create and Run Tests
 ====================
 
+To run tests
+
+```
+    $ python3 -m pytest src
+```
+
 
 Secrets
 =======
