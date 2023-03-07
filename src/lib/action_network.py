@@ -17,6 +17,9 @@ class Signup:
             # Not every signup comes from an event
             url = None
         return url
+    
+    def get_email(self):
+        return self.data[0]['osdi:attendance']['person']['email_addresses'][0]['address']
 
     def get_action(self):
         url = self.get_action_url()
@@ -29,7 +32,17 @@ class Signup:
     def get_rsvp(self):
         """ Pulls out the info needed for an at rsvp
         """
-        None
+        return { 
+            "Url": self.get_action_url(),
+            "First Name": self.data['person']['given_name'],
+            "Last Name": self.data['person']['family_name'],
+            "Email": self.get_email(),
+        }
+
+    def get_volunteer(self):
+        """ Pulls out the info needed for an at volunteer
+        """
+        return {}
 
     @staticmethod
     def from_file(filename):
