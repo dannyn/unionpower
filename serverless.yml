@@ -18,7 +18,7 @@ package:
 
 functions:
   an_endpoint:
-    handler: src.handlers.an_endpoint_handler
+    handler: src.functions.an_endpoint.handler
     events:
       - http:
           path: an_endpoint

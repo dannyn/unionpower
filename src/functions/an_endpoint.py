@@ -18,8 +18,10 @@ def check_event_exists(action: Action, events: List) -> bool:
 def check_volunteer_exists(signup: Signup, volunteers: List) -> bool:
     None
 
-def an_endpoint(payload):
 
+def handler(event, context):
+
+    payload = event.payload
     signup = Signup(payload)
     # get action from an
     action = signup.get_action()
@@ -46,4 +48,4 @@ def an_endpoint(payload):
 
     # insert into event signups
     
-    return True
+    return { "statusCode": 200, }
