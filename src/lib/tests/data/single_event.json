@@ -1,0 +1,81 @@
+{
+   "_links" : {
+      "action_network:embed" : {
+         "href" : "https://actionnetwork.org/api/v2/events/87a34885-6ad0-42e0-81af-e38cea2f7548/embed"
+      },
+      "curies" : [
+         {
+            "href" : "https://actionnetwork.org/docs/v2/{rel}",
+            "name" : "osdi",
+            "templated" : true
+         },
+         {
+            "href" : "https://actionnetwork.org/docs/v2/{rel}",
+            "name" : "action_network",
+            "templated" : true
+         }
+      ],
+      "osdi:attendances" : {
+         "href" : "https://actionnetwork.org/api/v2/events/87a34885-6ad0-42e0-81af-e38cea2f7548/attendances"
+      },
+      "osdi:creator" : {
+         "href" : "https://actionnetwork.org/api/v2/people/90dbdade-a710-48b7-b525-0ff724b9316f"
+      },
+      "osdi:organizer" : {
+         "href" : "https://actionnetwork.org/api/v2/people/90dbdade-a710-48b7-b525-0ff724b9316f"
+      },
+      "osdi:record_attendance_helper" : {
+         "href" : "https://actionnetwork.org/api/v2/events/87a34885-6ad0-42e0-81af-e38cea2f7548/attendances"
+      },
+      "record_attendance_helper" : {
+         "href" : "https://actionnetwork.org/api/v2/events/87a34885-6ad0-42e0-81af-e38cea2f7548/attendances"
+      },
+      "self" : {
+         "href" : "https://actionnetwork.org/api/v2/events/87a34885-6ad0-42e0-81af-e38cea2f7548"
+      }
+   },
+   "action_network:hidden" : false,
+   "action_network:sponsor" : {
+      "browser_url" : "https://actionnetwork.org/api/v2/groups/nyc-dsa-union-power",
+      "title" : "NYC-DSA Union Power"
+   },
+   "browser_url" : "https://actionnetwork.org/events/union-power-district-organizing-canvas-central-brooklyn",
+   "created_date" : "2023-03-06T00:40:28Z",
+   "description" : "<p>Join the Central Brooklyn Branch of NYC-DSA & the Union Power Campaign for a district organizing canvass of NY State Senator Jabari Brisportâs districts. These events are a chance to talk to our neighbors in our DSA electedsâ districts, to figure out what issues are impacting people and how we can help, and to build working class power and socialism in New York City!</p><p>From helping people sign up for unemployment pay or food stamps, to connecting tenants to local tenants unions, to talking with people about workplace issues and connecting them with organizers who can support them, we engage with people on a variety of issues through district organizing, depending on the local context.</p><p>In general though, people have issues at work, and Union Power is about helping people organize to overcome those issues through collective action.</p><p>We will go over everything you need to know before heading out in pairs. Please bring a fully charged phone!</p><div><br></div>",
+   "featured_image_url" : "https://can2-prod.s3.amazonaws.com/events/photos/001/378/654/original/317d1ea5-c604-4379-ab74-24a7d0ead204.jpeg",
+   "guests_can_invite_others" : true,
+   "identifiers" : [
+      "action_network:87a34885-6ad0-42e0-81af-e38cea2f7548"
+   ],
+   "instructions" : "<p>We will meet at Fort Greene Park, on the corner of Myrtle Ave and Washington Park. Bring a fully charged phone, we'll go over everything else before we head out!</p>",
+   "location" : {
+      "address_lines" : [
+         "320 Myrtle Ave"
+      ],
+      "country" : "US",
+      "locality" : "Brooklyn",
+      "location" : {
+         "accuracy" : "Rooftop",
+         "latitude" : 40.6931553,
+         "longitude" : -73.9736648
+      },
+      "postal_code" : "11205",
+      "region" : "NY",
+      "venue" : "Fort Greene Park (corner of Myrtle Ave & Washington Park)"
+   },
+   "modified_date" : "2023-03-06T00:58:04Z",
+   "name" : "",
+   "origin_system" : "Action Network",
+   "reminders" : [
+      {
+         "method" : "email",
+         "minutes" : 1440
+      }
+   ],
+   "start_date" : "2023-03-12T14:00:00Z",
+   "status" : "confirmed",
+   "title" : "Union Power District Organizing Canvas - Central Brooklyn",
+   "total_accepted" : 1,
+   "transparence" : "opaque",
+   "visibility" : "public"
+}
