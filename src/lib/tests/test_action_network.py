@@ -28,3 +28,50 @@ class TestAction(unittest.TestCase):
         self.assertTrue(action.magic_string("Jabari Brisport"))
         self.assertFalse(action.magic_string("Andrew Cuomo"))
 
+    def test_get_event(self):
+        action = Action.from_file("src/lib/tests/data/single_event.json")
+
+        expected = {
+            'Url': 'https://actionnetwork.org/events/union-power-district-organizing-canvas-central-brooklyn',
+            'Start At': '2023-03-12T14:00:00Z',
+            'Name': 'Union Power District Organizing Canvas - Central Brooklyn',
+        }
+
+        self.assertEqual(action.get_event(), expected)
+
+    def test_all(self):
+        page1 = {
+            '_embedded': {
+                'osdi:events': [1,2,3]
+            },
+            '_links': {
+                'next':  {
+                    'href': 'https://actionnetwork.org/api/v2/events2'
+                }
+            }
+        }
+        page2 = {
+            '_embedded': {
+                'osdi:events': [4,5,6]
+            },
+            '_links': {
+                'next':  {
+                    'href': 'https://actionnetwork.org/api/v2/events3'
+                }
+            }
+        }
+        page3 = {
+            '_embedded': {
+                'osdi:events': [7,8,9]
+            },
+            '_links': {
+            }
+        }
+
+        with requests_mock.Mocker() as m:
+            m.get('https://actionnetwork.org/api/v2/events', json=page1)
+            m.get('https://actionnetwork.org/api/v2/events2', json=page2)
+            m.get('https://actionnetwork.org/api/v2/events3', json=page3)
+            actions = Action.all()
+
+            self.assertEqual(len(actions), 9)

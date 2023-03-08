@@ -61,7 +61,11 @@ class Action:
     def get_event(self):
         """ Pulls out the info needed for an at event
         """
-        None
+        return {
+            'Url': self.data['browser_url'],
+            'Start At': self.data['start_date'],
+            'Name': self.data['title']
+        }
 
     def magic_string(self, ms: str) -> bool:
         """ Check for presence of magic string in description
@@ -73,6 +77,23 @@ class Action:
         f = open(filename)
         data = json.load(f)
         return Action(data)
+
+    @staticmethod
+    def all():
+        """ Get all actions from action network
+        """
+        url = 'https://actionnetwork.org/api/v2/events'
+        actions = []
+        while True:
+            resp = get(url)
+            for action in resp['_embedded']['osdi:events']:
+                a = Action(action)
+                actions.append(Action(action))
+            if 'next' in resp['_links']:
+                url = resp['_links']['next']['href']
+            else:
+                break
+        return actions
 
 
 def get(url):
