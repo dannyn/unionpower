@@ -8,7 +8,7 @@ from src.lib.action_network import Action
 def handler(event, context):
 
     key = os.getenv('AIRTABLE_API_KEY')
-    events = pyairtable.Table(key, 'applfZpncSpD2xDJK', 'Events').all()
+    events = Table(key, 'applfZpncSpD2xDJK', 'Events').all()
     actions = Action.all()
 
     for action in actions:
@@ -16,8 +16,6 @@ def handler(event, context):
         # remove existing events
         f = list(filter(lambda x: e['Url'] == x['Url'], events['fields']))
         if not f:
-            payload = {
-            }
-            # add to table
+            events.create(e)
 
     return { "statusCode": 200, }
