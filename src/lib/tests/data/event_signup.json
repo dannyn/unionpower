@@ -9,8 +9,8 @@
             "person": {
                 "created_date": "2017-12-16T16:32:47Z",
                 "modified_date": "2023-03-06T00:56:05Z",
-                "family_name": "Person",
-                "given_name": "Lastname",
+                "family_name": "FamilyName",
+                "given_name": "PersonName",
                 "postal_addresses": [
                     {
                         "primary": "True",

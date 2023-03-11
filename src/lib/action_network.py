@@ -19,7 +19,11 @@ class Signup:
         return url
     
     def get_email(self):
-        return self.data[0]['osdi:attendance']['person']['email_addresses'][0]['address']
+        person = self.get_person()
+        return person['email_addresses'][0]['address']
+
+    def get_person(self):
+        return self.data[0]['osdi:attendance']['person']
 
     def get_action(self):
         url = self.get_action_url()
@@ -32,17 +36,25 @@ class Signup:
     def get_rsvp(self):
         """ Pulls out the info needed for an at rsvp
         """
+        person = self.get_person()
         return { 
             "Url": self.get_action_url(),
-            "First Name": self.data['person']['given_name'],
-            "Last Name": self.data['person']['family_name'],
+            "First Name": person['given_name'],
+            "Last Name": person['family_name'],
             "Email": self.get_email(),
         }
 
     def get_volunteer(self):
         """ Pulls out the info needed for an at volunteer
         """
-        return {}
+        person = self.get_person()
+        return {
+            "Email": self.get_email(),
+            "First Name": person['given_name'],
+            "Last Name": person['family_name'],
+            "Phone": person['phone_numbers'][0]['number'],
+            "Zip Code": person['postal_addresses'][0]['postal_code'],
+        }
 
     @staticmethod
     def from_file(filename):
@@ -66,6 +78,11 @@ class Action:
             'Start At': self.data['start_date'],
             'Name': self.data['title']
         }
+
+    def get_url(self):
+        """ Returns the url of the action 
+        """
+        return self.data['browser_url']
 
     def magic_string(self, ms: str) -> bool:
         """ Check for presence of magic string in description

@@ -11,7 +11,7 @@ def handler(event, context):
     events = table.all()
     actions = Action.all()
 
-    # check that this is just cause
+    # get rid of actions which arent just cause
     actions = list(filter(lambda x: x.magic_string('justcausecampaign'), actions))
     for action in actions:
         e = action.get_event()
@@ -19,5 +19,5 @@ def handler(event, context):
         f = list(filter(lambda x: e['Url'] == x['fields']['Url'], events))
         if not f:
             table.create(e)
-
+    # return records created
     return { "statusCode": 200, }
