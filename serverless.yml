@@ -25,12 +25,14 @@ functions:
           method: post
     environment:
       ACTION_NETWORK_API_KEY: ${ssm:/action-network-api-key~true}
+      AIRTABLE_API_KEY: ${ssm:/airtable-api-key~true}
   sync_events:
     handler: src.functions.sync_events.handler
     events:
       - schedule: rate(30 minutes)
     environment:
       ACTION_NETWORK_API_KEY: ${ssm:/action-network-api-key~true}
+      AIRTABLE_API_KEY: ${ssm:/airtable-api-key~true}
 
 plugins:
   - serverless-python-requirements
