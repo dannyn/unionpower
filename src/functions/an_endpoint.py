@@ -57,7 +57,7 @@ def handler(event, context):
         events_table.create(new_event)
 
     # if volunteer doesnt exist, create it
-    if not check_volunteer_exists(payload, volunteers):
+    if not check_volunteer_exists(signup, volunteers):
         new_vol = signup.get_volunteer()
         volunteers_table.create(new_vol)
 
