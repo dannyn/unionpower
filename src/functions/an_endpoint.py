@@ -33,27 +33,47 @@ def check_volunteer_exists(signup: Signup, volunteers: List) -> bool:
 
 
 def get_event_id(action: Action) -> str:
-    # should be able to get this directly and not loop
-    events = events_table.all()
     url = action.get_url()
-    for event in events:
-        if event['fields']['Url'] == url:
-            return event['id']
-    return None
+    formula = f"{{Url}} = '{url}'"
+    event = events_table.first(formula=formula)
+    return event['id']
 
 
 def get_volunteer_id(signup: Signup) -> str:
-    # should be able to get this directly and not loop
-    #volunteers = volunteers_table.all()
-
     email = signup.get_email()
     formula = f"{{Email}} = '{email}'"
     volunteer = volunteers_table.first(formula=formula)
     return volunteer['id']
-    #for v in volunteers:
-    #    if v['fields']['Email'] == email:
-    #        return v['id']
-    #return None
+
+
+def create_event_if_not_exist(action: Action) -> str:
+    """ Creates the event in airtable if it doesnt exist. Returns
+        id either way.
+    """
+    url = action.get_url()
+    formula = f"{{Url}} = '{url}'"
+    event = events_table.first(formula=formula)
+    if event:
+        return event['id']
+    else:
+        event = action.get_event()
+        resp = events_table.create(event)
+        return resp['id']
+
+
+def create_volunteer_if_not_exist(signup: Signup) -> str:
+    """ Creates the event in airtable if it doesnt exist. Returns
+        id either way.
+    """
+    email = signup.get_email()
+    formula = f"{{Email}} = '{email}'"
+    vol = volunteers_table.first(formula=formula)
+    if vol:
+        return vol['id']
+    else:
+        volunteer = signup.get_volunteer()
+        resp = volunteers_table.create(volunteer)
+        return resp['id']
 
 
 def handler(event, context):
@@ -75,14 +95,16 @@ def handler(event, context):
         return {"statusCode": 200, "body": '{"message": "not just cause"}'}
 
     # check that the event exists, if not create it
-    if not check_event_exists(action, events):
-        new_event = action.get_event()
-        events_table.create(new_event)
+    #if not check_event_exists(action, events):
+    #    new_event = action.get_event()
+    #    events_table.create(new_event)
+    create_event_if_not_exist(action)
+    create_volunteer_if_not_exist(signup)
 
     # if volunteer doesnt exist, create it
-    if not check_volunteer_exists(signup, volunteers):
-        new_vol = signup.get_volunteer()
-        volunteers_table.create(new_vol)
+    #if not check_volunteer_exists(signup, volunteers):
+    #    new_vol = signup.get_volunteer()
+    #    volunteers_table.create(new_vol)
 
     # insert into rsvps
     rsvp = signup.get_rsvp()
