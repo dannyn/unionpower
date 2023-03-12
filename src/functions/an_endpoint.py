@@ -58,13 +58,13 @@ def handler(event, context):
     if not action.magic_string('justcausecampaign'):
         return {"statusCode": 200, "body": '{"message": "not just cause"}'}
 
-    create_event_if_not_exist(action)
-    create_volunteer_if_not_exist(signup)
+    event_id = create_event_if_not_exist(action)
+    vol_id = create_volunteer_if_not_exist(signup)
 
-    # insert into rsvps
+    # insert into rsvps with correct ids for linking
     rsvp = signup.get_rsvp()
-    rsvp['Event'] = [get_event_id(action)]
-    rsvp['Volunteer'] = [get_volunteer_id(signup)]
+    rsvp['Event'] = [event_id],
+    rsvp['Volunteer'] = [vol_id],
     rsvps_table.create(rsvp)
 
     return {"statusCode": 200, }
