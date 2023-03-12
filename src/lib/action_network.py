@@ -32,16 +32,18 @@ class Signup:
             return Action(resp)
         else:
             return None
+        
+    def get_id(self):
+        return self.data[0]['osdi:attendance']['identifiers'][0].split(':')[1]
 
     def get_rsvp(self):
         """ Pulls out the info needed for an at rsvp
         """
-        person = self.get_person()
         return { 
-            "Url": self.get_action_url(),
-            "First Name": person['given_name'],
-            "Last Name": person['family_name'],
-            "Email": self.get_email(),
+            "Id": self.get_id(),
+            "Event": self.get_action_url(),
+            "Volunteer": self.get_email(),
+            "RSVP'd At": self.data[0]['osdi:attendance']['created_date'],
         }
 
     def get_volunteer(self):

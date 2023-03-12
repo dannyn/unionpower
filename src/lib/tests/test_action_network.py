@@ -20,6 +20,10 @@ class TestSignup(unittest.TestCase):
         signup = Signup.from_file("src/lib/tests/data/event_signup.json")
         self.assertEqual(signup.get_email(), 'personperson@gmail.com')
 
+    def test_get_id(self):
+        signup = Signup.from_file("src/lib/tests/data/event_signup.json")
+        self.assertEqual(signup.get_id(), '3a532d8d-80d7-406c-8580-43a3fed1f3e2')
+
     def test_get_volunteer(self):
         signup = Signup.from_file("src/lib/tests/data/event_signup.json")
 
@@ -37,10 +41,10 @@ class TestSignup(unittest.TestCase):
         signup = Signup.from_file("src/lib/tests/data/event_signup.json")
 
         expected = {
-            "Url": 'https://actionnetwork.org/api/v2/events/87a34885-6ad0-42e0-81af-e38cea2f7548',
-            "Email": 'personperson@gmail.com',
-            "First Name": 'PersonName',
-            "Last Name": 'FamilyName',
+            "Event": 'https://actionnetwork.org/api/v2/events/87a34885-6ad0-42e0-81af-e38cea2f7548',
+            "Volunteer": 'personperson@gmail.com',
+            "Id": '3a532d8d-80d7-406c-8580-43a3fed1f3e2',
+            "RSVP'd At": '2023-03-06T00:56:04Z',
         }
 
         self.assertEqual(signup.get_rsvp(), expected)
