@@ -44,12 +44,12 @@ def handler(event, context):
 
     # check that this signup is from an action
     if not action:
-        return {"statusCode": 200, }
+        return {"statusCode": 200, "body": '{"message": "not from an action"}'}
 
     # check that the signup is for a just cause event by looking
     # for the magic string in the description
     if not action.magic_string('justcausecampaign'):
-        return {"statusCode": 200, }
+        return {"statusCode": 200, "body": '{"message": "not just cause"}'}
 
     # check that the event exists, if not create it
     if not check_event_exists(action, events):
