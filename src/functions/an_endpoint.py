@@ -49,7 +49,7 @@ def get_volunteer_id(signup: Signup) -> str:
     email = signup.get_email()
     formula = f"{{Email}} = '{email}'"
     volunteer = volunteers_table.first(formula=formula)
-    return volunteer
+    return volunteer['id']
     #for v in volunteers:
     #    if v['fields']['Email'] == email:
     #        return v['id']
