@@ -33,6 +33,7 @@ def check_volunteer_exists(signup: Signup, volunteers: List) -> bool:
 
 
 def get_event_id(action: Action) -> str:
+    # should be able to get this directly and not loop
     events = events_table.all()
     url = action.get_url()
     for event in events:
@@ -42,12 +43,17 @@ def get_event_id(action: Action) -> str:
 
 
 def get_volunteer_id(signup: Signup) -> str:
-    volunteers = volunteers_table.all()
-    email = signup.get_url()
-    for v in volunteers:
-        if v['fields']['Email'] == email:
-            return v['id']
-    return None
+    # should be able to get this directly and not loop
+    #volunteers = volunteers_table.all()
+
+    email = signup.get_email()
+    formula = f"{{Email}} = '{email}'"
+    volunteer = volunteers_table.first(formula=formula)
+    return volunteer
+    #for v in volunteers:
+    #    if v['fields']['Email'] == email:
+    #        return v['id']
+    #return None
 
 
 def handler(event, context):
