@@ -53,7 +53,7 @@ class Signup:
             "First Name": person['given_name'],
             "Last Name": person['family_name'],
             "Phone": person['phone_numbers'][0]['number'],
-            "Zip Code": int(person['postal_addresses'][0]['postal_code']),
+            "Zip Code": person['postal_addresses'][0]['postal_code'],
         }
 
     @staticmethod

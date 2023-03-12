@@ -28,7 +28,7 @@ class TestSignup(unittest.TestCase):
             "First Name": 'PersonName',
             "Last Name": 'FamilyName',
             "Phone": '12125551212',
-            "Zip Code": 11218,
+            "Zip Code": '11218',
         }
 
         self.assertEqual(signup.get_volunteer(), expected)
