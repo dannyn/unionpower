@@ -10,6 +10,10 @@ from src.lib.action_network import Action, Signup
     An action refers to an action in action network. Once it is in 
     the airtable it is called an event.
 """
+key = os.getenv('AIRTABLE_API_KEY')
+events_table = Table(key, 'applfZpncSpD2xDJK', 'Events')
+volunteers_table = Table(key, 'applfZpncSpD2xDJK', 'Volunteers')
+rsvps_table = Table(key, 'applfZpncSpD2xDJK', 'RSVPs')
 
 
 def check_event_exists(action: Action, events: List) -> bool:
@@ -28,12 +32,25 @@ def check_volunteer_exists(signup: Signup, volunteers: List) -> bool:
     return False
 
 
-def handler(event, context):
-    key = os.getenv('AIRTABLE_API_KEY')
-    events_table = Table(key, 'applfZpncSpD2xDJK', 'Events')
-    volunteers_table = Table(key, 'applfZpncSpD2xDJK', 'Volunteers')
-    rsvps_table = Table(key, 'applfZpncSpD2xDJK', 'RSVPs')
+def get_event_id(action: Action) -> str:
+    events = events_table.all()
+    url = action.get_url()
+    for event in events:
+        if event['fields']['Url'] == url:
+            return event['id']
+    return None
 
+
+def get_volunteer_id(signup: Signup) -> str:
+    volunteers = volunteers_table.all()
+    email = signup.get_url()
+    for v in volunteers:
+        if v['fields']['Email'] == email:
+            return v['id']
+    return None
+
+
+def handler(event, context):
     events = events_table.all()
     volunteers = volunteers_table.all()
 
@@ -63,6 +80,8 @@ def handler(event, context):
 
     # insert into rsvps
     rsvp = signup.get_rsvp()
+    rsvp['Event'] = [get_event_id(action)]
+    rsvp['Volunteer'] = [get_volunteer_id(signup)]
     rsvps_table.create(rsvp)
 
     return {"statusCode": 200, }
