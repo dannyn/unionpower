@@ -29,7 +29,7 @@ class Signup:
         url = self.get_action_url()
         if url:
             resp = get(url)
-            return resp
+            return Action(resp)
         else:
             return None
 
