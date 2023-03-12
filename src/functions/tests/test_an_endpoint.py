@@ -4,7 +4,7 @@ import unittest
 from unittest import mock
 
 from src.lib.action_network import Action, Signup
-from src.functions.an_endpoint import create_event_if_not_exist, create_volunteer_if_not_exist
+from src.functions.an_endpoint import handler, create_event_if_not_exist, create_volunteer_if_not_exist
 
 
 class TestAction(unittest.TestCase):
@@ -52,5 +52,30 @@ class TestAction(unittest.TestCase):
         mock_create.return_value = {'id': '123456'}
         self.assertEqual(create_volunteer_if_not_exist(signup), '123456')
 
-    def test_handler(self):
-        self.assertTrue(True)
+    @mock.patch("src.lib.action_network.Signup.get_action")
+    @mock.patch("src.functions.an_endpoint.create_volunteer_if_not_exist")
+    @mock.patch("src.functions.an_endpoint.create_event_if_not_exist")
+    @mock.patch("src.functions.an_endpoint.rsvps_table.create")
+    def test_handler(self, mock_create, mock_event, mock_volunteer, mock_get_action):
+
+        # check for not an event
+        event = {
+            'body': {'some_nonsense': 'sure'}
+        }
+        mock_get_action.return_value = None
+        resp = handler(event, None)
+        self.assertEqual(resp['body'], '{"message": "not from an action"}')
+
+        # check for not just cause
+        mock_get_action.return_value = Action({'description': 'not it'})
+        resp = handler(event, None)
+        self.assertEqual(resp['body'], '{"message": "not just cause"}')
+
+        # full run through
+        f = open("src/functions/tests/data/an_endpoint_jc_campaign.json")
+        event = json.load(f)
+        mock_event.return_value = '1234'
+        mock_volunteer.return_value = '5678'
+        mock_get_action.return_value = Action({'description': 'justcausecampaign'})
+        resp = handler(event, None)
+        self.assertEqual(resp, {"statusCode": 200})

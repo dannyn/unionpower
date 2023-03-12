@@ -1,0 +1,72 @@
+{
+  "body": [
+    {
+      "osdi:attendance": {
+        "created_date": "2023-03-12T02:56:40Z",
+        "modified_date": "2023-03-12T02:56:40Z",
+        "identifiers": [
+          "action_network:3b9c9278-f013-4ee6-9645-f4b6b5299635"
+        ],
+        "person": {
+          "created_date": "2017-03-14T09:38:50Z",
+          "modified_date": "2023-03-12T02:56:47Z",
+          "family_name": "Last",
+          "given_name": "First",
+          "postal_addresses": [
+            {
+              "primary": true,
+              "address_lines": [
+                "25-38 43rd st"
+              ],
+              "locality": "Astoria",
+              "region": "New York",
+              "postal_code": "11103",
+              "country": "US",
+              "location": {
+                "latitude": 40.6521,
+                "longitude": -74.0018,
+                "accuracy": "Approximate"
+              }
+            }
+          ],
+          "email_addresses": [
+            {
+              "primary": true,
+              "address": "person@gmail.com"
+            }
+          ],
+          "phone_numbers": [
+            {
+              "primary": true,
+              "number": "7183211367",
+              "number_type": "Mobile"
+            }
+          ],
+          "languages_spoken": [
+            "en"
+          ]
+        },
+        "action_network:referrer_data": {
+          "website": "www.google.com"
+        },
+        "_links": {
+          "self": {
+            "href": "https://actionnetwork.org/api/v2/events/f2d6309f-1a0a-42c1-af50-22abd42dd57d/attendances/3b9c9278-f013-4ee6-9645-f4b6b5299635"
+          },
+          "osdi:event": {
+            "href": "https://actionnetwork.org/api/v2/events/f2d6309f-1a0a-42c1-af50-22abd42dd57d"
+          },
+          "osdi:person": {
+            "href": "https://actionnetwork.org/api/v2/people/f5e7f697-af3a-4f9d-9b1a-48dc9943a6a5"
+          }
+        },
+        "status": "accepted"
+      },
+      "action_network:sponsor": {
+        "title": "NYC-DSA Union Power",
+        "url": "https://actionnetwork.org/groups/nyc-dsa-union-power"
+      },
+      "idempotency_key": "d8608b4547416cbf89a2bffd4e2f50b8"
+    }
+  ]
+}
