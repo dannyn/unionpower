@@ -63,8 +63,8 @@ def handler(event, context):
 
     # insert into rsvps with correct ids for linking
     rsvp = signup.get_rsvp()
-    rsvp['Event'] = [event_id],
-    rsvp['Volunteer'] = [vol_id],
+    rsvp['Event'] = [event_id]
+    rsvp['Volunteer'] = [vol_id]
     rsvps_table.create(rsvp)
 
     return {"statusCode": 200, }
