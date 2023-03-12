@@ -17,8 +17,8 @@ class Signup:
             # Not every signup comes from an event
             url = None
         return url
-    
-    def get_email(self):
+
+    def get_email(self) -> str:
         person = self.get_person()
         return person['email_addresses'][0]['address']
 
@@ -32,14 +32,14 @@ class Signup:
             return Action(resp)
         else:
             return None
-        
-    def get_id(self):
+
+    def get_id(self) -> str:
         return self.data[0]['osdi:attendance']['identifiers'][0].split(':')[1]
 
     def get_rsvp(self):
         """ Pulls out the info needed for an at rsvp
         """
-        return { 
+        return {
             "Id": self.get_id(),
             "Event": self.get_action_url(),
             "Volunteer": self.get_email(),
@@ -81,7 +81,7 @@ class Action:
             'Name': self.data['title']
         }
 
-    def get_url(self):
+    def get_url(self) -> str:
         """ Returns the url of the action 
         """
         return self.data['browser_url']
