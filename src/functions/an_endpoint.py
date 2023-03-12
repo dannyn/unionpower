@@ -37,7 +37,7 @@ def handler(event, context):
     events = events_table.all()
     volunteers = volunteers_table.all()
 
-    payload = event.payload
+    payload = event['body']
     signup = Signup(payload)
     # get action from an
     action = signup.get_action()
