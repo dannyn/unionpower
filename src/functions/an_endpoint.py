@@ -1,5 +1,5 @@
+import json
 import os
-
 from pyairtable import Table
 
 from src.lib.action_network import Action, Signup
@@ -9,15 +9,15 @@ from src.lib.action_network import Action, Signup
     the airtable it is called an event.
 """
 key = os.getenv('AIRTABLE_API_KEY')
-events_table = Table(key, 'applfZpncSpD2xDJK', 'Events')
-volunteers_table = Table(key, 'applfZpncSpD2xDJK', 'Volunteers')
-rsvps_table = Table(key, 'applfZpncSpD2xDJK', 'RSVPs')
+justcause_id = os.getenv('JUSTCAUSE_TABLE_ID')
+districtorganizing_id = os.getenv('DISTRICT_ORGANIZING_TABLE_ID')
 
 
-def create_event_if_not_exist(action: Action) -> str:
+def create_event_if_not_exist(action: Action, table_name: str) -> str:
     """ Creates the event in airtable if it doesnt exist. Returns
         id either way.
     """
+    events_table = Table(key, table_name, 'Events')
     url = action.get_url()
     formula = f"{{Url}} = '{url}'"
     event = events_table.first(formula=formula)
@@ -29,10 +29,11 @@ def create_event_if_not_exist(action: Action) -> str:
         return resp['id']
 
 
-def create_volunteer_if_not_exist(signup: Signup) -> str:
+def create_volunteer_if_not_exist(signup: Signup, table_name: str) -> str:
     """ Creates the event in airtable if it doesnt exist. Returns
         id either way.
     """
+    volunteers_table = Table(key, table_name, 'Volunteers')
     email = signup.get_email()
     formula = f"{{Email}} = '{email}'"
     vol = volunteers_table.first(formula=formula)
@@ -44,8 +45,24 @@ def create_volunteer_if_not_exist(signup: Signup) -> str:
         return resp['id']
 
 
+def handle_campaign(signup: Signup, action: Action, table_name: str):
+    event_id = create_event_if_not_exist(action, table_name)
+    vol_id = create_volunteer_if_not_exist(signup, table_name)
+
+    # insert into rsvps with correct ids for linking
+    rsvps_table = Table(key, table_name, 'RSVPs')
+    rsvp = signup.get_rsvp()
+    rsvp['Event'] = [event_id]
+    rsvp['Volunteer'] = [vol_id]
+    rsvps_table.create(rsvp)
+
+
+def handle_onboarding(signup: Signup, table_name: str):
+    None
+
+
 def handler(event, context):
-    payload = event['body']
+    payload = json.loads(event['body'])
     signup = Signup(payload)
     action = signup.get_action()
 
@@ -53,18 +70,14 @@ def handler(event, context):
     if not action:
         return {"statusCode": 200, "body": '{"message": "not from an action"}'}
 
-    # check that the signup is for a just cause event by looking
-    # for the magic string in the description
-    if not action.magic_string('justcausecampaign'):
-        return {"statusCode": 200, "body": '{"message": "not just cause"}'}
+    body = {}
+    if action.magic_string('justcausecampaign'):
+        handle_campaign(signup, action, justcause_id)
+        body['justcausecampaign'] = True
+    elif action.magic_string('districtorganizingcampaign'):
+        handle_campaign(signup, action, districtorganizing_id)
+        body['districtorganizingcampaign'] = True
 
-    event_id = create_event_if_not_exist(action)
-    vol_id = create_volunteer_if_not_exist(signup)
+    handle_onboarding(signup, 'onboardingtablename')
 
-    # insert into rsvps with correct ids for linking
-    rsvp = signup.get_rsvp()
-    rsvp['Event'] = [event_id]
-    rsvp['Volunteer'] = [vol_id]
-    rsvps_table.create(rsvp)
-
-    return {"statusCode": 200, }
+    return {"statusCode": 200, "body": body}

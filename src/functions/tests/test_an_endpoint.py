@@ -8,8 +8,8 @@ from src.functions.an_endpoint import handler, create_event_if_not_exist, create
 
 
 class TestAction(unittest.TestCase):
-    @mock.patch("src.functions.an_endpoint.events_table.first")
-    @mock.patch("src.functions.an_endpoint.events_table.create")
+    @mock.patch("pyairtable.Table.first")
+    @mock.patch("pyairtable.Table.create")
     def test_create_event_if_not_exist(self, mock_create, mock_first):
         action = Action({
             'browser_url': 'https://eventurl.com',
@@ -17,14 +17,15 @@ class TestAction(unittest.TestCase):
             'title': 'title',
         })
         mock_first.return_value = {'id': '1234'}
-        self.assertEqual(create_event_if_not_exist(action), '1234')
+        self.assertEqual(create_event_if_not_exist(action, 'table_name'), '1234')
 
         mock_first.return_value = None
         mock_create.return_value = {'id': '12345'}
-        self.assertEqual(create_event_if_not_exist(action), '12345')
+        self.assertEqual(create_event_if_not_exist(action, 'table_name'), '12345')
 
-    @mock.patch("src.functions.an_endpoint.volunteers_table.first")
-    @mock.patch("src.functions.an_endpoint.volunteers_table.create")
+
+    @mock.patch("pyairtable.Table.first")
+    @mock.patch("pyairtable.Table.create")
     def test_create_volunteer_if_not_exist(self, mock_create, mock_first):
         signup = Signup([
             {
@@ -46,36 +47,32 @@ class TestAction(unittest.TestCase):
             }
         ])
         mock_first.return_value = {'id': '5678'}
-        self.assertEqual(create_volunteer_if_not_exist(signup), '5678')
+        self.assertEqual(create_volunteer_if_not_exist(signup, 'table_name'), '5678')
 
         mock_first.return_value = None
         mock_create.return_value = {'id': '123456'}
-        self.assertEqual(create_volunteer_if_not_exist(signup), '123456')
+        self.assertEqual(create_volunteer_if_not_exist(signup, 'table_name'), '123456')
 
     @mock.patch("src.lib.action_network.Signup.get_action")
     @mock.patch("src.functions.an_endpoint.create_volunteer_if_not_exist")
     @mock.patch("src.functions.an_endpoint.create_event_if_not_exist")
-    @mock.patch("src.functions.an_endpoint.rsvps_table.create")
+    @mock.patch("pyairtable.Table.create")
     def test_handler(self, mock_create, mock_event, mock_volunteer, mock_get_action):
 
         # check for not an event
         event = {
-            'body': {'some_nonsense': 'sure'}
+            'body': '{"some_nonsense": "sure"}'
         }
         mock_get_action.return_value = None
         resp = handler(event, None)
         self.assertEqual(resp['body'], '{"message": "not from an action"}')
 
-        # check for not just cause
-        mock_get_action.return_value = Action({'description': 'not it'})
-        resp = handler(event, None)
-        self.assertEqual(resp['body'], '{"message": "not just cause"}')
-
-        # full run through
+        # full run through for just cause
         f = open("src/functions/tests/data/an_endpoint_jc_campaign.json")
-        event = json.load(f)
+        j = json.load(f)
+        event = {"body": json.dumps(j['body'])}
         mock_event.return_value = '1234'
         mock_volunteer.return_value = '5678'
         mock_get_action.return_value = Action({'description': 'justcausecampaign'})
         resp = handler(event, None)
-        self.assertEqual(resp, {"statusCode": 200})
+        self.assertEqual(resp, {"statusCode": 200, "body": {"justcausecampaign": True}})

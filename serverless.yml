@@ -26,6 +26,8 @@ functions:
     environment:
       ACTION_NETWORK_API_KEY: ${ssm:/action-network-api-key~true}
       AIRTABLE_API_KEY: ${ssm:/airtable-api-key~true}
+      JUSTCAUSE_TABLE_ID: ${ssm:/justcause-table-id~true}
+      DISTRICTORGANIZING_TABLE_ID: ${ssm:/districtorganizing-table-id~true}
   sync_events:
     handler: src.functions.sync_events.handler
     events:
@@ -33,6 +35,8 @@ functions:
     environment:
       ACTION_NETWORK_API_KEY: ${ssm:/action-network-api-key~true}
       AIRTABLE_API_KEY: ${ssm:/airtable-api-key~true}
+      JUSTCAUSE_TABLE_ID: ${ssm:/justcause-table-id~true}
+      DISTRICTORGANIZING_TABLE_ID: ${ssm:/districtorganizing-table-id~true}
 
 plugins:
   - serverless-python-requirements
