@@ -54,7 +54,13 @@ def handle_campaign(signup: Signup, action: Action, table_name: str):
     rsvp = signup.get_rsvp()
     rsvp['Event'] = [event_id]
     rsvp['Volunteer'] = [vol_id]
-    rsvps_table.create(rsvp)
+
+    # dont make duplicates, action network will keep sending it sometimes
+    formula = f"{{Id}} = '{rsvp['Id']}'"
+    if rsvps_table.first(formula=formula):
+        rsvps_table.create(rsvp)
+        return True
+    return False
 
 
 def handle_onboarding(signup: Signup, table_name: str):
@@ -72,11 +78,11 @@ def handler(event, context):
 
     body = {}
     if action.magic_string('justcausecampaign'):
-        handle_campaign(signup, action, justcause_id)
-        body['justcausecampaign'] = True
+        if handle_campaign(signup, action, justcause_id):
+            body['justcausecampaign'] = True
     elif action.magic_string('districtorganizingcampaign'):
-        handle_campaign(signup, action, districtorganizing_id)
-        body['districtorganizingcampaign'] = True
+        if handle_campaign(signup, action, districtorganizing_id):
+            body['districtorganizingcampaign'] = True
 
     handle_onboarding(signup, 'onboardingtablename')
 

@@ -7,7 +7,7 @@ from src.lib.action_network import Action, Signup
 from src.functions.an_endpoint import handler, create_event_if_not_exist, create_volunteer_if_not_exist
 
 
-class TestAction(unittest.TestCase):
+class TestAnEndpoint(unittest.TestCase):
     @mock.patch("pyairtable.Table.first")
     @mock.patch("pyairtable.Table.create")
     def test_create_event_if_not_exist(self, mock_create, mock_first):
@@ -56,8 +56,10 @@ class TestAction(unittest.TestCase):
     @mock.patch("src.lib.action_network.Signup.get_action")
     @mock.patch("src.functions.an_endpoint.create_volunteer_if_not_exist")
     @mock.patch("src.functions.an_endpoint.create_event_if_not_exist")
+    @mock.patch("pyairtable.Table.first")
     @mock.patch("pyairtable.Table.create")
-    def test_handler(self, mock_create, mock_event, mock_volunteer, mock_get_action):
+    def test_handler(self, mock_create, mock_first, mock_event, mock_volunteer, mock_get_action):
+        mock_first.return_value = True
 
         # check for not an event
         event = {
