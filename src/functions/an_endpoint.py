@@ -57,7 +57,7 @@ def handle_campaign(signup: Signup, action: Action, table_name: str):
 
     # dont make duplicates, action network will keep sending it sometimes
     formula = f"{{Id}} = '{rsvp['Id']}'"
-    if rsvps_table.first(formula=formula):
+    if not rsvps_table.first(formula=formula):
         rsvps_table.create(rsvp)
         return True
     return False
